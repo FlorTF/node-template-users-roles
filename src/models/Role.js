@@ -2,8 +2,6 @@
 import {DataTypes} from 'sequelize'
 import {sequelize} from '../database.js'
 
-export const ROLES = ["admin", "unprivileged_user"];
-
 export const Role = sequelize.define('roles',{
     _id:{
         type: DataTypes.INTEGER,

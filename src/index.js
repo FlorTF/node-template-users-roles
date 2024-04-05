@@ -6,7 +6,7 @@ import { sequelize } from './database.js'
 async function main(){
     try{
         await sequelize.sync(
-            // { force: true }
+             //{ force: true }
         )
         app.listen(4000)
         console.log('Conexión establecida correctamente',4000)
