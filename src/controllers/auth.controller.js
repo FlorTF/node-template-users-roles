@@ -22,12 +22,12 @@ export const singUp = async (req, res) => {
 
     if (roles) {
       const foundRoles = await Role.findAll({ where: { role: roles } }); /*Busca en la columna 'role' de la tabla Role todos los registros que tienen el valor ingresado en roles*/
-      newUser.RoleId = foundRoles.map((r) => r._id);/*foundRoles es el registro completo(en forma de objeto), recorremos cada registro y tomamos el .id, para ingresarlo en el valor 'roles' de newUser */
+      newUser.RoleId = foundRoles.map((r) => r._id);/*foundRoles es el registro completo(en forma de objeto), recorremos cada registro y tomamos el .id, para ingresarlo en el valor 'RoleId' de newUser */
     } else { /*Si no se ingresó ningun valor en req.body.roles */
-      const roleUnprivilegedUser = await Role.findOne({ /*Busca en la columna 'role' de la tabla Role solo un registro que tiene que tiene como contenido*/ /*roleUnprivilegedUser es el registro completo(en forma de objeto) */
+      const roleUnprivilegedUser = await Role.findOne({ /*Busca en la columna 'role' de la tabla Role solo un registro que tiene como contenido 'roleUnprivilegedUser'*/
         where: { role: "unprivileged_user" },
       });
-      newUser.RoleId = [roleUnprivilegedUser._id]; /*Por defecto se tomará el id del registro 'unprivileged_user' para ingresarlo en el valor 'roles' de newUser */
+      newUser.RoleId = [roleUnprivilegedUser._id]; /*Por defecto se tomará el id del registro 'unprivileged_user' para ingresarlo en el valor 'RoleId' de newUser */
     }
 
     /*Se guarda un usuario */
@@ -46,6 +46,7 @@ export const singUp = async (req, res) => {
       createdAt: userSaved.createdAt,
       updatedAt: userSaved.updatedAt,
       RoleId: userSaved.RoleId,
+      token: token
 
       //   //token: token
     });
@@ -59,7 +60,9 @@ export const singIn = async (req, res) => {
   try {
     const userFound = await User.findOne({
       where: { email },
+      //include: Role
     }); /*usuario buscado por el email */
+    console.log(userFound)
     if (!userFound)
       return res.status(400).json({ message: "Usuario no encontrado" });
 
@@ -78,13 +81,15 @@ export const singIn = async (req, res) => {
     // res.json({
     //     message: "Usuario creado satisfactoriamente",
     // })
-    console.log(userFound)
+    //console.log(userFound)
     res.json({
       _id: userFound._id,
       username: userFound.username,
       email: userFound.email,
       createdAt: userFound.createdAt,
       updatedAt: userFound.updatedAt,
+      RoleId: userFound.RoleId,
+      token: token
     });
   } catch (e) {
     res.status(500).json({ message: e.message });
