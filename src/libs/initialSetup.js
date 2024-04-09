@@ -7,9 +7,9 @@ export const createRoles = async () => {
 
     const values = await Promise.all([
       new Role({ role: "unprivileged_user" }).save(),
-      new Role({ role: "admin" }).save()
+      new Role({ role: "admin" }).save(),
     ]);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 };
