@@ -25,6 +25,7 @@ export const singUp = async (req, res) => {
         (r) => r._id
       ); /*foundRoles es el registro completo(en forma de objeto), recorremos cada registro y tomamos el .id, para ingresarlo en el valor 'RoleId' de newUser */
     } else {
+
       /*Si no se ingresó ningun valor en req.body.roles */
       const roleUnprivilegedUser = await Role.findOne({
         /*Busca en la columna 'role' de la tabla Role solo un registro que tiene como contenido 'roleUnprivilegedUser'*/
@@ -37,7 +38,7 @@ export const singUp = async (req, res) => {
 
     /*Se guarda un usuario */
     const userSaved = await newUser.save();
-    console.log({ userSaved });
+    //console.log({ userSaved });
 
     /*Se crea el token */
     const token = await createAccessToken({ _id: userSaved._id });

@@ -23,7 +23,7 @@ export const verifyToken = async (req, res, next) => {
     ); /*Extraemos la informacion dentro del 'token' y lo guardamos en 'decoded' que es un objeto con los siguientes datos: {_id: a, iat:b, exp:c}  */
     //console.log(decoded);
     req.userId = decoded._id; //_id del usuario que tiene habilitados las funciones CRUD, extraido del token, lo guardamos en una nueva const llamada 'userId' el cual será parte del 'request', esto con la finalidad de usarlo en el siguiente middleware.
-    //console.log(req)
+    
 
     /*A partir del '_id' extraido confirmaremos si el usuario (al que pertenece el token y puede crear otros usuarios) existe o no*/
     const user = await User.findByPk(req.userId, {
